@@ -1,3 +1,4 @@
 {
-    "/dist/js/script.js": "/dist/js/script.js"
+    "/dist/js/script.js": "/dist/js/script.js",
+    "/dist/img/.DS_Store": "/dist/img/.DS_Store"
 }
