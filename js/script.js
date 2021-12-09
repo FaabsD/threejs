@@ -1,5 +1,6 @@
 const THREE = require('three');
 const {ArcballControls} = require("three/examples/jsm/controls/ArcballControls");
+const {SpotLight} = require("three");
 let camera, controls, scene, renderer;
 let width, height;
 
@@ -17,7 +18,7 @@ function init() {
 
     // setup the camera
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    setCameraPosition(camera, 15, 0, 0);
+    setCameraPosition(camera, 15, 1, 0);
 
     // setup the Three Js renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -30,6 +31,9 @@ function init() {
 
     // setup controls
     controls = new ArcballControls( camera, renderer.domElement, scene );
+
+    // make gizmos invisible
+    controls.setGizmosVisible(false);
 
     // set Cubetexture
 
@@ -48,9 +52,23 @@ function init() {
         namePrefix + 'nz.jpg',
     ]);
 
+    // set geometry texture
+    const texture = new THREE.TextureLoader().load('dist/img/textures/earth-map.jpeg');
+
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+
+    texture.repeat.set(1, 1);
+
     // create new geometry (3d object) and add to scene
     let geometry = new THREE.SphereGeometry(3, 30, 30);
-    let material = new THREE.MeshLambertMaterial( { color: '#f1f1f1' } );
+    let material = new THREE.MeshLambertMaterial( {
+        color: '#f1f1f1',
+        map: texture,
+        metalness: 0,
+        roughness: 50
+    } );
+    // let material = new THREE.MeshBasicMaterial({ color: '#fff', map: texture});
     let mesh = new THREE.Mesh(geometry, material);
 
     scene.background = CubeTexture;
@@ -80,7 +98,7 @@ function setCameraPosition(camera, x, y, z) {
 }
 
 function setupLight() {
-    let spotLight = new THREE.SpotLight(0xffffff, 0.8);
+    let spotLight = new THREE.SpotLight(0xffffff, 1.6);
 
     spotLight.position.set(-5, 5, 0);
     spotLight.castShadow = true;
@@ -95,10 +113,14 @@ function setupLight() {
     camera.add(spotLight);
 
     // show helper (debugging)
+    enableLightHelper(false, spotLight);
+}
 
-    const SpotLightHelper = new THREE.SpotLightHelper(spotLight, 'rgb(255, 255, 0)');
-
-    scene.add(SpotLightHelper);
+function enableLightHelper(enabled = true, SpotLight) {
+    if (enabled) {
+        const SpotlightHelper = new THREE.SpotLightHelper(SpotLight, 'rgb(255, 255, 0)');
+        scene.add(SpotlightHelper);
+    }
 }
 
 function animate() {
