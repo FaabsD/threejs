@@ -39,17 +39,17 @@ function init() {
 
     const loader = new THREE.CubeTextureLoader();
 
-    loader.setPath('dist/img/cubetextures/stars/');
+    loader.setPath('dist/img/cubetextures/space/');
 
-    const namePrefix = 'stars_';
+    const namePrefix = 'space_';
 
     let CubeTexture = loader.load([
-        namePrefix + 'px.jpg',
-        namePrefix + 'nx.jpg',
-        namePrefix + 'py.jpg',
-        namePrefix + 'ny.jpg',
-        namePrefix + 'pz.jpg',
-        namePrefix + 'nz.jpg',
+        namePrefix + 'px.png',
+        namePrefix + 'nx.png',
+        namePrefix + 'py.png',
+        namePrefix + 'ny.png',
+        namePrefix + 'pz.png',
+        namePrefix + 'nz.png',
     ]);
 
     // set geometry texture
